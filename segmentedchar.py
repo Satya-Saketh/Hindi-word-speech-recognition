@@ -1,26 +1,16 @@
-# Python program FOR Hindi CHARACTER RECOGNITION MOSAIC PS1
-# TEAM ULTRONIX 
-# TEAM LEADER-RISHAB ARYA
-
-# our code is invariant to rotation,
-# the word can be anywhere not necessary in middle,
-# works on blurry images,
-# works on images having noise
-# works when characters are separated by some distance
-
 import cv2
 import numpy as np
 from scipy import ndimage
 import math
 import argparse
 import os
-import all_functions_used as mosaic
+import all_functions_used as helpers
 
 def predict(imagepath, output_dir):
-    img = mosaic.load_image(imagepath)
+    img = helpers.load_image(imagepath)
     print(img.shape)
-    org = mosaic.remove_noise_and_preprocess(img)
-    new_img = mosaic.preprocess(img)
+    org = helpers.remove_noise_and_preprocess(img)
+    new_img = helpers.preprocess(img)
     
     for i in range(new_img.shape[0]):
         for j in range(new_img.shape[1]):
@@ -32,10 +22,10 @@ def predict(imagepath, output_dir):
     cv2.imshow("processed_image", new_img)
     cv2.waitKey(1000)
 
-    x1, x2, y1, y2 = mosaic.houghtransform(new_img)
+    x1, x2, y1, y2 = helpers.houghtransform(new_img)
     angle = math.degrees(math.atan2(y2 - y1, x2 - x1))
     rot = ndimage.rotate(new_img, angle)
-    rot = mosaic.word_segmentation(rot)
+    rot = helpers.word_segmentation(rot)
     cv2.imshow('Rotated_word_image', rot)
     cv2.waitKey(1000)
     
@@ -84,9 +74,9 @@ def predict(imagepath, output_dir):
         roi = rot[:, start_char[i - 1]:start_char[i]]
         h = roi.shape[1]
         w = roi.shape[0]
-        roi = mosaic.extractroi(roi)
+        roi = helpers.extractroi(roi)
         roi = cv2.resize(roi, (180, 180))
-        if mosaic.check(roi) and h >= 30 and w >= 30:
+        if helpers.check(roi) and h >= 30 and w >= 30:
             character.append(roi)
             cv2.imshow('CHARACTER_SEGMENTED', roi)
             cv2.waitKey(1000)
