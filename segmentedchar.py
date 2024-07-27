@@ -4,7 +4,14 @@ from scipy import ndimage
 import math
 import argparse
 import os
+import tensorflow as tf
 import all_functions_used as helpers
+
+mapping ={0:u'ठ',1:u'ड',2:u'त',3:u'थ',4:u'द',5:u'क',6:u'न',7:u'प',8:u'फ',9:u'म',10:u'य',11:u'र',12:u'व',13:u'स',14:u'क्ष',15:u'त्र',16:u'ज्ञ',17:u'घ',18:u'च',19:u'छ',20:u'ज'}
+
+modelpath=".\\model_hindi.hdf5"
+
+model = tf.keras.models.load_model(modelpath)
 
 def predict(imagepath, output_dir):
     gray_img = helpers.load_image(imagepath) 
@@ -104,17 +111,31 @@ def predict(imagepath, output_dir):
             char_img_path = os.path.join(output_dir, f'char_{i}.png')
             cv2.imwrite(char_img_path, roi)
 
-    return character
+    ls=[]
+    for char in character:
+        pred=helpers.predictchar(char, model)
+        ls.append(mapping[pred])
+    
+    return ls
 
 def test():
     image_paths = ['./hindi.png']
     output_dir = './segmented_characters/'
     os.makedirs(output_dir, exist_ok=True)
+
+    correct_answers = ['']
+    score = 0
+    multiplication_factor=2 
     
-    for image_path in image_paths:
+    for i,image_path in enumerate(image_paths):
         image = cv2.imread(image_path)
-        segmented_characters = predict(image_path, output_dir)
+        answer = predict(image_path, output_dir)
+        print(''.join(answer))
+        if correct_answers[i] == answer:
+            score += len(answer)*multiplication_factor
+        
         print('Segmented characters saved in', output_dir)
+        print('The final score of the participant is',score)
 
 if __name__ == "__main__":
     test()
