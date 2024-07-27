@@ -170,4 +170,10 @@ def check(img):
                 cnt += 1
     return cnt > 10
 
-
+def predictchar(image,model):
+	image=cv2.resize(image,(64,64))
+	image=image*1/255.0
+	image = np.expand_dims(image, axis=0)
+	image = np.expand_dims(image, axis=3)
+	lists = model.predict(image)[0]
+	return np.argmax(lists)
