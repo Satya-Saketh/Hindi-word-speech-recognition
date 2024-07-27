@@ -168,7 +168,7 @@ def predict(imagepath, output_dir):
     return ls
 
 def test():
-    image_paths = ['./hindi.png']
+    image_paths = ['./SampleImages/sharbath.jpeg']
     output_dir = './segmented_characters/'
     os.makedirs(output_dir, exist_ok=True)
 
