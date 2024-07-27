@@ -9,7 +9,7 @@ import all_functions_used as helpers
 
 mapping ={0:u'ठ',1:u'ड',2:u'त',3:u'थ',4:u'द',5:u'क',6:u'न',7:u'प',8:u'फ',9:u'म',10:u'य',11:u'र',12:u'व',13:u'स',14:u'क्ष',15:u'त्र',16:u'ज्ञ',17:u'घ',18:u'च',19:u'छ',20:u'ज'}
 
-modelpath=".\\model_hindi.hdf5"
+modelpath=".\\Models\\21classesmodel.h5"
 
 model = tf.keras.models.load_model(modelpath)
 
