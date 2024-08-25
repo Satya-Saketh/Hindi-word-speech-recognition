@@ -79,6 +79,8 @@ def predict(imagepath, output_dir):
 
     cv2.imshow("processed_image", otsu_threshold_img)
     cv2.waitKey(1000)
+    processed_img_path = os.path.join("./segmented_characters/", f'proc_img.png')
+    cv2.imwrite(processed_img_path, otsu_threshold_img)
 
     # returns coordinates of header line and rotate the image horizontally
     x1, x2, y1, y2 = helpers.houghtransform(otsu_threshold_img)
@@ -90,6 +92,8 @@ def predict(imagepath, output_dir):
 
     cv2.imshow('Rotated_word_image', rotated_img)
     cv2.waitKey(1000)
+    rotated_img_path = os.path.join("./segmented_characters/", f'rotated_img.png')
+    cv2.imwrite(rotated_img_path, rotated_img)
     
     dilated = rotated_img.copy()
     start_char = []
@@ -129,6 +133,8 @@ def predict(imagepath, output_dir):
         
     cv2.imshow("HeaderLine Removed", dilated)
     cv2.waitKey(1000)
+    header_img_path = os.path.join("./segmented_characters/", f'headerline_img.png')
+    cv2.imwrite(header_img_path, dilated)
     
 
     ## Character Segmentation
@@ -168,7 +174,7 @@ def predict(imagepath, output_dir):
     return ls
 
 def test():
-    image_paths = ['./SampleImages/sharbath.jpeg']
+    image_paths = ['./SampleImages/kamal.jpeg']
     output_dir = './segmented_characters/'
     os.makedirs(output_dir, exist_ok=True)
 
