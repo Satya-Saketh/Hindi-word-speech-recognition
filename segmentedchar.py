@@ -65,9 +65,15 @@ model = tf.keras.models.load_model(modelpath)
 def predict(imagepath, output_dir):
     gray_img = helpers.load_image(imagepath) 
     print(gray_img.shape)
+
     adap_threshold_img = helpers.remove_noise_and_preprocess(gray_img)
+    adap_threshold_img_path = os.path.join("./segmented_characters/", f'adap_thresh_img.png')
+    cv2.imwrite(adap_threshold_img_path, adap_threshold_img)
+
     otsu_threshold_img = helpers.preprocess(gray_img)
-    
+    otsu_threshold_img_path = os.path.join("./segmented_characters/", f'otsu_thresh_img.png')
+    cv2.imwrite(otsu_threshold_img_path, otsu_threshold_img)
+
     # Perform bitwise and on both adaptive threshold image and otsu threhold image
     # and again store in otsu threshold image
     for i in range(otsu_threshold_img.shape[0]):
@@ -165,7 +171,7 @@ def predict(imagepath, output_dir):
 
             char_img_path = os.path.join(output_dir, f'char_{i}.png')
             cv2.imwrite(char_img_path, roi)
-
+            
     ls=[]
     for char in character:
         pred=helpers.predictchar(char, model)
@@ -174,7 +180,7 @@ def predict(imagepath, output_dir):
     return ls
 
 def test():
-    image_paths = ['./SampleImages/kamal.jpeg']
+    image_paths = ['./SampleImages/kamal2.jpeg']
     output_dir = './segmented_characters/'
     os.makedirs(output_dir, exist_ok=True)
 
