@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import math
+import os
 
 # Desc: first read image, second coverts bgr image to grayscale image
 # Finally apply gaussian blur using (5,5) kernel size
@@ -85,6 +86,8 @@ def houghtransform(preprocessed_img):
         grayscale image using the Hough Line Transform. '''
 
     edges = cv2.Canny(preprocessed_img, 50, 150, apertureSize=3)
+    canny_img_path = os.path.join("./segmented_characters/", f'canny_img.png')
+    cv2.imwrite(canny_img_path, edges)
     lines = cv2.HoughLines(edges, 1, np.pi / 180, preprocessed_img.shape[1] // 10)
 
     px1, px2, py1, py2 = -1, -1, -1, -1 # initialize
